@@ -24,7 +24,7 @@ def solve_opt(start_pose, alpha1, alpha2, que):
             'alpha2': float(alpha2),
             'start_pose': start_pose.tolist(),
         }
-        key = (start_pose.tolist(), alpha1, alpha2)
+        key = (tuple(start_pose.tolist()), alpha1, alpha2)
         que.put((key, opt_dict))
     return None
 
@@ -55,13 +55,13 @@ def generate_trajectory(poses_num=10):
 
 
     workdir = '/home/majd/papers/Python-B-spline-examples/multi_objective/random_trajectories'
-    file_name = 'rand_traj_numPoses{}_alpha1{}_alpha2{}_{}.yaml'.format(poses_num, alpha1, alpha2, datetime.now().strftime("%Y%m%d-%H%M%S"))
+    file_name = 'rand_traj_poses{}_alpha1{}_alpha2{}_{}.yaml'.format(poses_num, alpha1, alpha2, datetime.now().strftime("%Y%m%d-%H%M%S"))
     with open(os.path.join(workdir, file_name), 'w') as f:
         yaml.dump(result_dict, f, default_flow_style=True)
 
 def main():
     numOfFiles = 1
-    numOfPoses = 3
+    numOfPoses = 1
     for _ in range(numOfFiles):
         generate_trajectory(numOfPoses)
 
