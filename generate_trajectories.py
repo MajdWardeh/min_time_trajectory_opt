@@ -60,8 +60,8 @@ def generate_trajectory(poses_num=10):
         yaml.dump(result_dict, f, default_flow_style=True)
 
 def main():
-    numOfFiles = 1
-    numOfPoses = 1
+    numOfFiles = 10
+    numOfPoses = 50
     for _ in range(numOfFiles):
         generate_trajectory(numOfPoses)
 

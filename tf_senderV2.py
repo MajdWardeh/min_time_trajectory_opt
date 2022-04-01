@@ -12,7 +12,7 @@ from cv_bridge import CvBridge
 import cv2
 
 class TF_Sender:
-    def __init__(self, pose_list, mc_list, pose_update_rate=1000.0):
+    def __init__(self, pose_list, mc_list=None, pose_update_rate=1000.0):
         rospy.init_node('tf_sender_node', anonymous=True)
         self.pose_list = pose_list
         self.mc_list = mc_list
@@ -30,7 +30,9 @@ class TF_Sender:
 
         self.transorm_broadcaster = tf2_ros.TransformBroadcaster()
         self.pose_update_timer = rospy.Timer(rospy.Duration(1/self.pose_update_rate), self.poseUpdateTimerCallback)
-        self.image_subs = rospy.Subscriber('/uav/camera/left/image_rect_color', Image, self.imageCallback)
+
+        if self.mc_list is not None:
+            self.image_subs = rospy.Subscriber('/uav/camera/left/image_rect_color', Image, self.imageCallback)
 
         print('tf sender node started...')
         time.sleep(3)
@@ -99,8 +101,8 @@ class TF_Sender:
 def test():
     p = [0, -5, 2]
     q = rot.from_euler('xyz', [0, 0, 90], degrees=True).as_quat().tolist()
-    initialPose = p + q
-    tfSender = TF_Sender(initialPose)
+    initialPose = [p + q] * 1000
+    tfSender = TF_Sender(initialPose, pose_update_rate=1000.0)
 
 
 

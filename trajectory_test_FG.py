@@ -59,27 +59,27 @@ def test_opt():
 
 def test_opt_trajs_dict():
     workdir = '/home/majd/papers/Python-B-spline-examples/multi_objective/random_trajectories'
-    file_name = ''
+    file_name = 'rand_traj_poses1_alpha10.05_alpha20.001_20220331-230034.yaml'
 
     camera_k0 = np.diag([10, 10, 1])
     Rc_B = np.array([[0, 0, 1], [-1, 0, 0], [0, -1, 0]])
     Oc_B = np.zeros((3, 1))
     M = np.array([[0.0, 0.0, 2.03849]]) 
-    update_rate = 1000
+    update_rate = 1000.0
 
     with open(os.path.join(workdir, file_name), 'r') as stream:
-        trajs_dict = yaml.safe_load(stream)
+        trajs_dict = yaml.load(stream)
     
     traj_keys_list = list(trajs_dict.keys())
 
     for key in traj_keys_list[:3]:
-        if trajs_dict[key]['sucess']:
+        if trajs_dict[key]['success']:
             T_loss = trajs_dict[key]['T_loss']
             mI_loss = trajs_dict[key]['mI_loss']
             blur_loss = trajs_dict[key]['blur_loss']
 
             P = Trajectory.from_dictionary(trajs_dict[key]['P'])
-            X_star = np.array(trajs_dict[key]['x'])
+            x_star = np.array(trajs_dict[key]['x'])
 
             num = int(T_loss * update_rate)
             ti_list = np.linspace(0, T_loss, num, endpoint=True)
